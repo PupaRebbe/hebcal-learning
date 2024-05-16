@@ -1,7 +1,8 @@
-import {months, HDate} from '@hebcal/core';
+import {greg, months, HDate} from '@hebcal/core';
 function getPirkeiAvot(dt, il){
     const hd = new HDate(dt);
-    if(hd.getDay() < 6) throw new RangeError("Date must be Saturday");
+    if (!greg.isDate(dt)) throw new TypeError(`Argument not a Date: ${dt}`);
+    if(hd.getDay() < 6) throw new TypeError("Date must be Saturday");
     const shvi = new core.HDate(21, months.NISAN, hd.getFullYear());
     const diff = shvi.deltaDays(hd);
     if(diff <0){
