@@ -1,8 +1,8 @@
-var core = require("@hebcal/core");
+import {months, HDate} from '@hebcal/core';
 function getPirkeiAvot(dt, il){
-    const hd = new core.HDate(dt);
+    const hd = new HDate(dt);
     if(hd.getDay() < 6) throw new RangeError("Date must be Saturday");
-    const shvi = new core.HDate(21, core.months.NISAN, hd.getFullYear());
+    const shvi = new core.HDate(21, months.NISAN, hd.getFullYear());
     const diff = shvi.deltaDays(hd);
     if(diff <0){
         const first = shvi.after(6);
@@ -11,9 +11,9 @@ function getPirkeiAvot(dt, il){
         var holObj = {}; //when a Holiday falls on Saturday, Pirkei avot is not studied
         if(!il) {
             holObj.Achron = shvi.next();
-            holObj.Shavuot = new core.HDate(7, core.months.SIVAN, hd.getFullYear());
+            holObj.Shavuot = new HDate(7, core.months.SIVAN, hd.getFullYear());
         }
-        holObj.Erev = new core.HDate(8, core.months.AV, hd.getFullYear());
+        holObj.Erev = new HDate(8, core.months.AV, hd.getFullYear());
         holObj.Tb = holObj.Erev.next();
         for (const [hol, day] of Object.entries(holObj)) {
             if(day.deltaDays(hd) <=0){
@@ -26,7 +26,7 @@ function getPirkeiAvot(dt, il){
         }
         if(!chapter) return chapter;
         if(weekDiff >= 18){ //fourth round
-            const rh = new core.HDate(1, core.months.TISHREI, hd.getFullYear() +1);
+            const rh = new HDate(1, core.months.TISHREI, hd.getFullYear() +1);
             const last = rh.before(6);
             var result;
             const weeksRemain = Math.ceil(last.deltaDays(hd) / 7);
@@ -51,4 +51,3 @@ function getPirkeiAvot(dt, il){
     }
 }
 
-console.log(getPirkeiAvot(new Date(2023, 8, 2)));
